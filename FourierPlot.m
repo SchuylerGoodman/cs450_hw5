@@ -1,9 +1,11 @@
 function [ f_signal ] = FourierPlot( signal, t_min, t_max )
 %FOURIERPLOT Plot Fourier Transform of signal from t_min to t_max.
 
-N = length(signal)
+N = length(signal);
 
-x = t_min:t_max;
+diff = t_max - t_min;
+
+x = t_min:diff/N:t_max-(diff/N);
 x0 = x - ((t_max + t_min) / 2);
 
 fs = fft(signal);
@@ -29,7 +31,11 @@ title('Imaginary')
 linkaxes([real_plot, imag_plot], 'xy')
 
 magnitude = abs(f_signal);
-phase = atan2(imag(f_signal), real(f_signal));
+
+threshold = 1e-4;
+sig_mag = magnitude > threshold;
+phase_sig = times(f_signal, sig_mag);
+phase = atan2(imag(phase_sig), real(phase_sig));
 
 subplot(3, 2, 5)
 stem(x0, magnitude, 'Marker', 'none')
