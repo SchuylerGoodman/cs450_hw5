@@ -17,7 +17,7 @@ magnitude = abs(f_signal);
 M = zeros(1, maxCount);
 for t = 1:maxCount
     [~, i] = max(magnitude);
-    M(t) = i;
+    M(t) = i - 1;
     magnitude(i) = 0; 
 end
 

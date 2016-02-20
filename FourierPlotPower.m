@@ -1,5 +1,7 @@
-function [ f_signal ] = FourierPlot( signal, t_min, t_max )
-%FOURIERPLOT Plot Fourier Transform of signal from t_min to t_max.
+function [ output_args ] = FourierPlotPower( signal, t_min, t_max )
+%FOURIERPLOTPOWER Summary of this function goes here
+%   Detailed explanation goes here
+
 
 N = length(signal);
 
@@ -32,17 +34,19 @@ linkaxes([real_plot, imag_plot], 'xy')
 
 magnitude = abs(f_signal);
 
-threshold = 1e-4;
-sig_mag = magnitude > threshold;
-phase_sig = times(f_signal, sig_mag);
-phase = angle(phase_sig);
-
 subplot(3, 2, 5)
 stem(x0, magnitude, 'Marker', 'none')
 axis([x0(1), x0(end), -inf, inf])
 title('Magnitude')
 
+Pxx = f_signal.*conj(f_signal) / N;
+Pxx = Pxx(N/2:N);
+px0 = 0:N/2;
+
 subplot(3, 2, 6)
-stem(x0, phase, 'Marker', 'none')
-axis([x0(1), x0(end), -inf, inf])
-title('Phase')
+stem(px0, 10*log10(Pxx), 'Marker', 'none');
+axis([px0(1), px0(end), -inf, inf])
+title('Power Spectral Density')
+
+end
+
